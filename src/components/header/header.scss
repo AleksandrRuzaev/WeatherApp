@@ -1,3 +1,5 @@
+@use '../../utilities/variables' as v;
+
 .header {
     display: flex;
     justify-content: center;
@@ -5,6 +7,6 @@
     padding: 1rem 2rem;
 
     &__title {
-        color: #a69fb8;
+        color: v.$color-light-purple;
     }
 }

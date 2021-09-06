@@ -23,12 +23,14 @@
   "homepage": "https://github.com/AleksandrRuzaev/WeatherApp#readme",
   "dependencies": {
     "classnames": "^2.2.6",
+    "dotenv-webpack": "^7.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
     "@svgr/webpack": "^5.5.0",
     "@types/classnames": "^2.2.11",
+    "@types/node": "^16.7.10",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "babel-cli": "^6.26.0",

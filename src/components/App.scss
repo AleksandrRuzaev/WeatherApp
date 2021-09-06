@@ -1,11 +1,4 @@
 @use '../utilities/variables' as v;
-// @use '../utilities/mixins' as m;
-
-// html {
-//     @include m.media-max(v.$mobile-to-tablet) {
-//         font-size: 10px;
-//     }
-// }
 
 body {
     height: 100%;

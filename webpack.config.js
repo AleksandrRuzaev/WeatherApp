@@ -1,8 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
     mode: 'development',
@@ -29,17 +30,17 @@ module.exports = {
                 test: /\.s[ac]ss$/i,
                 use: [
                     // Creates `style` nodes from JS strings
-                    "style-loader",
+                    'style-loader',
                     // Translates CSS into CommonJS
-                    "css-loader",
+                    'css-loader',
                     // Compiles Sass to CSS
-                    "sass-loader",
+                    'sass-loader',
                 ],
             },
             {
                 test: /\.svg$/,
                 use: ['@svgr/webpack'],
-            }
+            },
         ],
     },
     resolve: {
@@ -65,10 +66,11 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 {
-                    from: path.resolve(__dirname, 'src', 'assets'), 
-                    to: path.resolve(__dirname, 'build', 'assets') 
+                    from: path.resolve(__dirname, 'src', 'assets'),
+                    to: path.resolve(__dirname, 'build', 'assets'),
                 },
             ],
-        })
+        }),
+        new Dotenv(),
     ],
 };
