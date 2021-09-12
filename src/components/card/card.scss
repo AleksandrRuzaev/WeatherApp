@@ -1,0 +1,48 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    width: 50vw;
+
+    margin: 0 auto;
+    padding: 2rem;
+
+    background-color: aqua;
+
+    &__title {
+        font-size: 1.5em;
+    }
+
+    &__description {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__description,
+    &__temperature,
+    &__wind,
+    &__humidity,
+    &__pressure {
+        display: flex;
+
+        width: 100%;
+
+        font-size: 1.2em;
+    }
+
+    &__field-title {
+        flex: 1 1;
+
+        font-weight: bold;
+    }
+
+    &__field-value {
+        flex: 2 1;
+
+        &--couple {
+            flex: 1 1;
+        }
+    }
+}
