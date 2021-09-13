@@ -5,29 +5,43 @@ import { Card } from '../card';
 import './content.scss';
 
 const Content: React.FC = (): JSX.Element => {
-    const [latitude, setLatitude] = useState<number>(0);
-    const [longitude, setLongitude] = useState<number>(0);
+    const [coordinates, setCoordinates] = useState<{
+        latitude: number;
+        longitude: number;
+    } | null>(null);
+
     const [data, setData] = useState<any>(null);
 
+    const isCoordinatesValid = useMemo(
+        () => coordinates?.latitude !== null && coordinates?.longitude !== null,
+        [coordinates?.latitude, coordinates?.longitude],
+    );
+
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = async (): Promise<void> => {
             navigator.geolocation.getCurrentPosition(
                 (position: GeolocationPosition): void => {
-                    setLatitude(position.coords.latitude);
-                    setLongitude(position.coords.longitude);
+                    setCoordinates({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    });
                 },
             );
 
-            await WeatherService.getWeather(latitude, longitude)
-                .then((res) => res.json())
-                .then((result) => {
-                    setData(result);
-                    console.log(result);
-                });
+            if (isCoordinatesValid) {
+                await WeatherService.getWeather(
+                    coordinates?.latitude ?? 0,
+                    coordinates?.longitude ?? 0,
+                )
+                    .then((res) => res.json())
+                    .then((result) => {
+                        setData(result);
+                    });
+            }
         };
 
         fetchData();
-    }, [latitude, longitude]);
+    }, [coordinates?.latitude, coordinates?.longitude, setCoordinates]);
 
     const currentDate = useMemo(() => {
         const date = moment(new Date()).format('ddd, MMMM DD h:mm A');
@@ -37,7 +51,7 @@ const Content: React.FC = (): JSX.Element => {
 
     return (
         <div className="content">
-            {Boolean(latitude) && Boolean(longitude) && data !== null && (
+            {isCoordinatesValid && data !== null && (
                 <Card
                     name={data.name}
                     iconId={data.weather[0].icon}
@@ -49,7 +63,10 @@ const Content: React.FC = (): JSX.Element => {
                     }}
                     humidity={data.main.humidity}
                     pressure={data.main.pressure}
-                    wind={{ speed: data.wind.speed, direction: data.wind.deg }}
+                    wind={{
+                        speed: data.wind.speed,
+                        direction: data.wind.deg,
+                    }}
                     description={data.weather[0].main}
                 >
                     {currentDate}
