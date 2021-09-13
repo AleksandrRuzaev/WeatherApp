@@ -1,3 +1,5 @@
+@use '../../utilities/variables' as v;
+
 .card {
     display: flex;
     flex-direction: column;
@@ -9,10 +11,51 @@
     margin: 0 auto;
     padding: 2rem;
 
-    background-color: aqua;
+    &--less-than-thirty {
+        background-color: v.$color-temp-less-than-thirty;
+    }
+    &--less-than-twenty {
+        background-color: v.$color-temp-less-than-twenty;
+    }
+    &--less-than-ten {
+        background-color: v.$color-temp-less-than-ten;
+    }
+    &--less-than-zero {
+        background-color: v.$color-temp-less-than-zero;
+    }
+    &--more-than-fourty {
+        background-color: v.$color-temp-more-than-fourty;
+    }
+    &--more-than-thirty {
+        background-color: v.$color-temp-more-than-thirty;
+    }
+    &--more-than-twenty {
+        background-color: v.$color-temp-more-than-twenty;
+    }
+    &--more-than-ten {
+        background-color: v.$color-temp-more-than-ten;
+    }
+    &--more-than-zero {
+        background-color: v.$color-temp-more-than-zero;
+    }
+
+    &--more-than-fourty,
+    &--less-than-ten,
+    &--less-than-twenty,
+    &--less-than-thirty {
+        color: v.$color-white;
+    }
+
 
     &__title {
         font-size: 1.5em;
+    }
+
+    &__temperature-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     }
 
     &__description {
@@ -30,6 +73,28 @@
         width: 100%;
 
         font-size: 1.2em;
+    }
+
+    &__temperature {
+        display: flex;
+        flex-direction: column;
+
+        &--first {
+            display: flex;
+            align-items: center;
+        }
+
+        &--second {
+            display: flex;
+        }
+
+        &--celsius {
+            font-size: 2rem;
+        }
+    }
+
+    &__temperature-separator {
+        margin: 0 .5rem;
     }
 
     &__field-title {

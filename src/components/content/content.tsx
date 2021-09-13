@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import moment from 'moment';
+import React, { useEffect, useMemo, useState } from 'react';
 import WeatherService from '../../services/weather.data.service';
 import { Card } from '../card';
 import './content.scss';
@@ -28,18 +29,31 @@ const Content: React.FC = (): JSX.Element => {
         fetchData();
     }, [latitude, longitude]);
 
+    const currentDate = useMemo(() => {
+        const date = moment(new Date()).format('ddd, MMMM DD h:mm A');
+
+        return <div className="content__date">{date}</div>;
+    }, []);
+
     return (
         <div className="content">
-            {latitude && longitude && data !== null && (
+            {Boolean(latitude) && Boolean(longitude) && data !== null && (
                 <Card
                     name={data.name}
                     iconId={data.weather[0].icon}
-                    temperature={data.main.temp}
+                    temperature={{
+                        temperature: data.main.temp,
+                        temperatureMax: data.main.temp_max,
+                        temperatureMin: data.main.temp_min,
+                        feelsLike: data.main.feels_like,
+                    }}
                     humidity={data.main.humidity}
                     pressure={data.main.pressure}
                     wind={{ speed: data.wind.speed, direction: data.wind.deg }}
                     description={data.weather[0].main}
-                />
+                >
+                    {currentDate}
+                </Card>
             )}
         </div>
     );

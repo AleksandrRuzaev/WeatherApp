@@ -1,9 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { CardProps } from './card.types';
 import './card.scss';
 import { getSymbolDirection } from './get-symbol-direction/get-symbol-direction.function';
 import { convertCelsiusToFahrenheit } from './convert-celsius-to-fahrenheit';
 import classNames from 'classnames';
+import { Tooltip } from '../tooltip';
+import { getColorModifier } from './get-color-modifier';
 
 const Card: React.FC<CardProps> = (props): JSX.Element => {
     const windDirection = useMemo(() => {
@@ -12,47 +14,89 @@ const Card: React.FC<CardProps> = (props): JSX.Element => {
         return !Number.isNaN(degree) ? getSymbolDirection(degree) : 'N/A';
     }, [props.wind.direction]);
 
-    const fahrenheitDegree = useMemo(
-        () => convertCelsiusToFahrenheit(Number(props.temperature)).toFixed(1),
-        [props.temperature],
-    );
+    const fixedCelsiusTemperature = useCallback((temperature: string) => {
+        return `${Number(temperature).toFixed(0)}°C`;
+    }, []);
+
+    const fixedFahrenheitTemperature = useCallback((temperature: string) => {
+        return `${convertCelsiusToFahrenheit(
+            Number(props.temperature.temperature),
+        ).toFixed(0)}°F`;
+    }, []);
 
     return (
-        <section className="card">
+        <section
+            className={classNames(
+                'card',
+                `card--${getColorModifier(
+                    Number(props.temperature.temperature),
+                )}`,
+            )}
+        >
             <h5 className="card__title">{props?.name}</h5>
-            <div className="card__icon">
-                {props.iconId && (
-                    <img
-                        src={`http://openweathermap.org/img/wn/${props.iconId}@2x.png`}
-                    />
-                )}
+            <>{props.children}</>
+            <div className="card__temperature-info">
+                <div className="card__temperature--first">
+                    <div className="card__icon">
+                        {props.iconId && (
+                            <img
+                                src={`http://openweathermap.org/img/wn/${props.iconId}@2x.png`}
+                            />
+                        )}
+                    </div>
+
+                    <Tooltip
+                        className="card__temperature--celsius"
+                        message={`${fixedFahrenheitTemperature(
+                            props.temperature.temperature,
+                        )}`}
+                    >
+                        {fixedCelsiusTemperature(props.temperature.temperature)}
+                    </Tooltip>
+                </div>
+
+                <div className="card__temperature--second">
+                    <Tooltip
+                        className="card__temperature-max"
+                        message={`${fixedFahrenheitTemperature(
+                            props.temperature.temperatureMax,
+                        )}`}
+                    >
+                        {`${fixedCelsiusTemperature(
+                            props.temperature.temperatureMax,
+                        )}`}
+                    </Tooltip>
+                    <span className="card__temperature-separator">/</span>
+                    <Tooltip
+                        className="card__temperature-min"
+                        message={`${fixedFahrenheitTemperature(
+                            props.temperature.temperatureMin,
+                        )}`}
+                    >
+                        {`${fixedCelsiusTemperature(
+                            props.temperature.temperatureMin,
+                        )}`}
+                    </Tooltip>
+                    <span className="card__temperature-separator">|</span>
+                    <Tooltip
+                        className="card__temperature-feel"
+                        message={`${fixedFahrenheitTemperature(
+                            props.temperature.feelsLike,
+                        )}`}
+                    >
+                        {` RealFeel ${fixedCelsiusTemperature(
+                            props.temperature.feelsLike,
+                        )}`}
+                    </Tooltip>
+                </div>
             </div>
+
             {props.description && (
                 <div className="card__description">
                     <div className="card__field-title">Description:</div>
                     <div className="card__field-value">{props.description}</div>
                 </div>
             )}
-
-            <div className="card__temperature">
-                <div className="card__field-title">Temperature:</div>
-                <div
-                    className={
-                        (classNames('card__field-value'),
-                        'card__field-value--couple')
-                    }
-                >
-                    {Number(props.temperature).toFixed(1)}°C
-                </div>
-                <div
-                    className={
-                        (classNames('card__field-value'),
-                        'card__field-value--couple')
-                    }
-                >
-                    {fahrenheitDegree}°F
-                </div>
-            </div>
 
             <div className="card__wind">
                 <div className="card__field-title">Wind:</div>
