@@ -1,15 +1,15 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
-import { ITooltipProps, ITooltipState } from './tooltip.types';
+import { ITooltipProps } from './tooltip.types';
 import './tooltip.scss';
 
 const Tooltip: React.FC<ITooltipProps> = (props): JSX.Element => {
     const elementRef = useRef<HTMLDivElement | null>(null);
 
     const [hoverStatus, setHoverStatus] = useState<boolean>(false);
-    const [position, setPosition] = useState<{ top: number; left: number }>({
+    const [position, setPosition] = useState<{ top: number; right: number }>({
         top: 0,
-        left: 0,
+        right: 0,
     });
 
     const handleMouseEnter = (): void => {
@@ -21,7 +21,7 @@ const Tooltip: React.FC<ITooltipProps> = (props): JSX.Element => {
         if (rect) {
             setPosition(() => ({
                 top: rect.top + 1.1 * rect.height,
-                left: rect.left,
+                right: rect.right - rect.width / 2,
             }));
         }
     };
@@ -55,7 +55,7 @@ const Tooltip: React.FC<ITooltipProps> = (props): JSX.Element => {
                 {props.children}
             </div>
             <div
-                style={{ top: position.top, left: position.left }}
+                style={{ top: position.top, left: position.right }}
                 className={classNames('tooltip__tooltip')}
             >
                 {props.message}

@@ -5,9 +5,3 @@ export interface ITooltipProps {
     message?: string;
     className?: string;
 }
-
-export interface ITooltipState {
-    hoverStatus: boolean;
-    top: number;
-    left: number;
-}
