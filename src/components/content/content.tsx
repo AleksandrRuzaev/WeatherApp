@@ -18,30 +18,28 @@ const Content: React.FC = (): JSX.Element => {
     );
 
     useEffect(() => {
-        const fetchData = async (): Promise<void> => {
+        const fetchData = (): void => {
             navigator.geolocation.getCurrentPosition(
                 (position: GeolocationPosition): void => {
-                    setCoordinates({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                    });
+                    WeatherService.getWeather(
+                        position.coords.latitude,
+                        position.coords.longitude,
+                    )
+                        .then((res) => res.json())
+                        .then((result) => {
+                            setData(result);
+
+                            setCoordinates({
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude,
+                            });
+                        });
                 },
             );
-
-            if (isCoordinatesValid) {
-                await WeatherService.getWeather(
-                    coordinates?.latitude ?? 0,
-                    coordinates?.longitude ?? 0,
-                )
-                    .then((res) => res.json())
-                    .then((result) => {
-                        setData(result);
-                    });
-            }
         };
 
         fetchData();
-    }, [coordinates?.latitude, coordinates?.longitude, setCoordinates]);
+    }, [coordinates?.latitude, coordinates?.longitude]);
 
     const currentDate = useMemo(() => {
         const date = moment(new Date()).format('ddd, MMMM DD h:mm A');
