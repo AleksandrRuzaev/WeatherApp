@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { CardProps } from './card.types';
 import './card.scss';
 import { getSymbolDirection } from './get-symbol-direction/get-symbol-direction.function';
@@ -8,20 +8,34 @@ import { Tooltip } from '../tooltip';
 import { getColorModifier } from './get-color-modifier';
 
 const Card: React.FC<CardProps> = (props): JSX.Element => {
+    const [isToday, setIsToday] = useState<boolean>(true);
+
     const windDirection = useMemo(() => {
         const degree = Number(props.wind.direction);
 
         return !Number.isNaN(degree) ? getSymbolDirection(degree) : 'N/A';
     }, [props.wind.direction]);
 
-    const fixedCelsiusTemperature = useCallback((temperature: string) => {
-        return `${Number(temperature).toFixed(0)}°C`;
-    }, []);
+    const fixedCelsiusTemperature = useCallback(
+        (temperature: string): string => {
+            return `${Number(temperature).toFixed(0)}°C`;
+        },
+        [],
+    );
 
-    const fixedFahrenheitTemperature = useCallback((temperature: string) => {
-        return `${convertCelsiusToFahrenheit(Number(temperature)).toFixed(
-            0,
-        )}°F`;
+    const fixedFahrenheitTemperature = useCallback(
+        (temperature: string): string => {
+            return `${convertCelsiusToFahrenheit(Number(temperature)).toFixed(
+                0,
+            )}°F`;
+        },
+        [],
+    );
+
+    const toggle = useCallback((): void => {
+        document.querySelector('.card')?.classList.toggle('flipped');
+
+        setIsToday((prevState) => !prevState);
     }, []);
 
     return (
@@ -157,15 +171,8 @@ const Card: React.FC<CardProps> = (props): JSX.Element => {
             </section>
 
             {props.backSide && (
-                <div
-                    className="card__action"
-                    onClick={() => {
-                        document
-                            .querySelector('.card')
-                            ?.classList.toggle('flipped');
-                    }}
-                >
-                    Tomorrow
+                <div className="card__action" onClick={toggle}>
+                    {isToday ? 'Tomorrow' : 'Today'}
                 </div>
             )}
         </>

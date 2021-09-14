@@ -1,8 +1,9 @@
 import moment from 'moment';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import WeatherService from '../../services/weather.data.service';
 import { Card } from '../card';
 import { CardProps } from '../card/card.types';
+import { getFormattedDate } from '../card/get-formatted-date/get-formatted-date.function';
 import './content.scss';
 
 const Content: React.FC = (): JSX.Element => {
@@ -11,12 +12,15 @@ const Content: React.FC = (): JSX.Element => {
         longitude: number;
     } | null>(null);
 
-    const [data, setData] = useState<any>(null);
+    const [currentData, setCurrentData] = useState<any>(null);
+    const [tomorrowData, setTomorrowData] = useState<any>(null);
 
     const isCoordinatesValid = useMemo(
         () => coordinates?.latitude !== null && coordinates?.longitude !== null,
         [coordinates?.latitude, coordinates?.longitude],
     );
+
+    const todayFormat = 'ddd, MMMM DD h:mm A';
 
     useEffect(() => {
         const fetchData = (): void => {
@@ -28,7 +32,7 @@ const Content: React.FC = (): JSX.Element => {
                     )
                         .then((res) => res.json())
                         .then((result) => {
-                            setData(result);
+                            setCurrentData(result);
 
                             setCoordinates({
                                 latitude: position.coords.latitude,
@@ -51,58 +55,59 @@ const Content: React.FC = (): JSX.Element => {
                 )
                     .then((res) => res.json())
                     .then((result) => {
-                        console.log(result);
+                        setTomorrowData(result.daily[1]);
+                        console.log(result.daily[1]);
                     });
             },
         );
     }, []);
 
-    const currentDate = useMemo(() => {
-        const date = moment(new Date()).format('ddd, MMMM DD h:mm A');
-
-        return <div className="content__date">{date}</div>;
-    }, []);
-
     return (
         <div className="content">
-            {isCoordinatesValid && data !== null && (
+            {isCoordinatesValid && currentData !== null && (
                 <Card
-                    name={data.name}
-                    iconId={data.weather[0].icon}
+                    name={currentData.name}
+                    iconId={currentData.weather[0].icon}
                     temperature={{
-                        temperature: data.main.temp,
-                        temperatureMax: data.main.temp_max,
-                        temperatureMin: data.main.temp_min,
-                        feelsLike: data.main.feels_like,
+                        temperature: currentData.main.temp,
+                        temperatureMax: currentData.main.temp_max,
+                        temperatureMin: currentData.main.temp_min,
+                        feelsLike: currentData.main.feels_like,
                     }}
-                    humidity={data.main.humidity}
-                    pressure={data.main.pressure}
+                    humidity={currentData.main.humidity}
+                    pressure={currentData.main.pressure}
                     wind={{
-                        speed: data.wind.speed,
-                        direction: data.wind.deg,
+                        speed: currentData.wind.speed,
+                        direction: currentData.wind.deg,
                     }}
-                    description={data.weather[0].main}
+                    description={currentData.weather[0].main}
                     backSide={
-                        <BackSide
-                            name={data.name}
-                            iconId={data.weather[0].icon}
-                            temperature={{
-                                temperature: data.main.temp,
-                                temperatureMax: data.main.temp_max,
-                                temperatureMin: data.main.temp_min,
-                                feelsLike: data.main.feels_like,
-                            }}
-                            humidity={data.main.humidity}
-                            pressure={data.main.pressure}
-                            wind={{
-                                speed: data.wind.speed,
-                                direction: data.wind.deg,
-                            }}
-                            description={data.weather[0].main}
-                        />
+                        tomorrowData ? (
+                            <BackSide
+                                name={currentData.name}
+                                iconId={tomorrowData.weather[0].icon}
+                                temperature={{
+                                    temperature: tomorrowData.temp.day,
+                                    temperatureMax: tomorrowData.temp.max,
+                                    temperatureMin: tomorrowData.temp.min,
+                                    feelsLike: tomorrowData.feels_like.day,
+                                }}
+                                humidity={tomorrowData.humidity}
+                                pressure={tomorrowData.pressure}
+                                wind={{
+                                    speed: tomorrowData.wind_speed,
+                                    direction: tomorrowData.wind_deg,
+                                }}
+                                description={tomorrowData.weather[0].main}
+                            />
+                        ) : undefined
                     }
                 >
-                    {currentDate}
+                    {
+                        <div className="content__date">
+                            {getFormattedDate(new Date(), todayFormat)}
+                        </div>
+                    }
                 </Card>
             )}
         </div>
@@ -110,12 +115,14 @@ const Content: React.FC = (): JSX.Element => {
 };
 
 const BackSide: React.FC<CardProps> = (props): JSX.Element => {
+    const tomorrowFormat = 'ddd, MMMM DD';
+
     return (
         <Card
             name={props.name}
             iconId={props.iconId}
             temperature={{
-                temperature: props.temperature.temperature+10,
+                temperature: props.temperature.temperature,
                 temperatureMax: props.temperature.temperatureMax,
                 temperatureMin: props.temperature.temperatureMin,
                 feelsLike: props.temperature.feelsLike,
@@ -128,7 +135,12 @@ const BackSide: React.FC<CardProps> = (props): JSX.Element => {
             }}
             description={props.description}
         >
-            {new Date().toDateString()}
+            <div className="content__date">
+                {getFormattedDate(
+                    moment(new Date()).add(1, 'day').toDate(),
+                    tomorrowFormat,
+                )}
+            </div>
         </Card>
     );
 };
