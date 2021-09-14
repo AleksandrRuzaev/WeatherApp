@@ -7,10 +7,10 @@ const getColorModifier = (temperature: number): string => {
     if (temperature <= -20 && temperature > -30) {
         modifier = 'less-than-twenty';
     }
-    if (temperature <= -10 || temperature > -20) {
+    if (temperature <= -10 && temperature > -20) {
         modifier = 'less-than-ten';
     }
-    if (temperature <= 0 || temperature > -10) {
+    if (temperature <= 0 && temperature > -10) {
         modifier = 'less-than-zero';
     }
     if (temperature > 0 && temperature < 10) {

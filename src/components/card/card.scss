@@ -8,9 +8,10 @@
 
     &__inner {
         position: relative;
+
         width: 100%;
         height: 100%;
-        text-align: center;
+
         transition: transform 0.6s;
         transform-style: preserve-3d;
     }
@@ -44,30 +45,39 @@
 
         &--less-than-thirty {
             background-color: v.$color-temp-less-than-thirty;
+            background: linear-gradient(180deg, v.$color-temp-less-than-twenty 0%, v.$color-temp-less-than-thirty 100%);
         }
         &--less-than-twenty {
             background-color: v.$color-temp-less-than-twenty;
+            background: linear-gradient(180deg, v.$color-temp-less-than-ten 0%, v.$color-temp-less-than-twenty 50%, v.$color-temp-less-than-thirty 100%);
         }
         &--less-than-ten {
             background-color: v.$color-temp-less-than-ten;
+            background: linear-gradient(180deg, v.$color-temp-less-than-zero 0%, v.$color-temp-less-than-ten 50%, v.$color-temp-less-than-twenty 100%);
         }
         &--less-than-zero {
             background-color: v.$color-temp-less-than-zero;
+            background: linear-gradient(180deg, v.$color-temp-less-than-zero 0%, v.$color-temp-less-than-ten 100%);
         }
         &--more-than-fourty {
             background-color: v.$color-temp-more-than-fourty;
+            background: linear-gradient(180deg, v.$color-temp-more-than-thirty 0%, v.$color-temp-more-than-fourty 100%);
         }
         &--more-than-thirty {
             background-color: v.$color-temp-more-than-thirty;
+            background: linear-gradient(180deg, v.$color-temp-more-than-twenty 0%, v.$color-temp-more-than-thirty 50%, v.$color-temp-more-than-fourty 100%);
         }
         &--more-than-twenty {
             background-color: v.$color-temp-more-than-twenty;
+            background: linear-gradient(180deg, v.$color-temp-more-than-ten 0%, v.$color-temp-more-than-twenty 50%, v.$color-temp-more-than-thirty 100%);
         }
         &--more-than-ten {
             background-color: v.$color-temp-more-than-ten;
+            background: linear-gradient(180deg, v.$color-temp-more-than-zero 0%, v.$color-temp-more-than-ten 50%, v.$color-temp-more-than-twenty 100%);
         }
         &--more-than-zero {
             background-color: v.$color-temp-more-than-zero;
+            background: linear-gradient(180deg, v.$color-temp-more-than-zero 0%, v.$color-temp-more-than-ten 100%);
         }
     
         &--more-than-fourty,

@@ -148,7 +148,7 @@ const Card: React.FC<CardProps> = (props): JSX.Element => {
                                     'card__field-value--couple')
                                 }
                             >
-                                {windDirection}
+                                ({windDirection})
                             </div>
                         </div>
                         <div className="card__humidity">

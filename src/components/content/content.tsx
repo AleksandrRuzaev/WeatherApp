@@ -1,9 +1,9 @@
 import moment from 'moment';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import WeatherService from '../../services/weather.data.service';
 import { Card } from '../card';
 import { CardProps } from '../card/card.types';
-import { getFormattedDate } from '../card/get-formatted-date/get-formatted-date.function';
+import { getFormattedDate } from '../card/get-formatted-date';
 import './content.scss';
 
 const Content: React.FC = (): JSX.Element => {
