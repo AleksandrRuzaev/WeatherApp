@@ -1,3 +1,5 @@
+import React from "react";
+
 type Wind = { speed: string; direction: string };
 type Temperature = {
     temperature: string;
@@ -14,4 +16,5 @@ export interface CardProps {
     humidity: string;
     pressure: string;
     wind: Wind;
+    backSide?: React.ReactNode;
 }

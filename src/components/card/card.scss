@@ -1,52 +1,88 @@
 @use '../../utilities/variables' as v;
 
 .card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-
+    background-color: transparent;
     width: 50vw;
+    height: 30rem;
+    perspective: 1000px;
+
+    &__inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+    }
+
+    .flipped &__inner {
+        transform: rotateY(180deg);
+    }
+
+    .flipped &__inner &__inner {
+        transform: rotateY(0);
+    }
+
+    &__front, &__back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        border-radius: 2rem;
+
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+    &__front {
+        padding: 2rem;
+
+        &--less-than-thirty {
+            background-color: v.$color-temp-less-than-thirty;
+        }
+        &--less-than-twenty {
+            background-color: v.$color-temp-less-than-twenty;
+        }
+        &--less-than-ten {
+            background-color: v.$color-temp-less-than-ten;
+        }
+        &--less-than-zero {
+            background-color: v.$color-temp-less-than-zero;
+        }
+        &--more-than-fourty {
+            background-color: v.$color-temp-more-than-fourty;
+        }
+        &--more-than-thirty {
+            background-color: v.$color-temp-more-than-thirty;
+        }
+        &--more-than-twenty {
+            background-color: v.$color-temp-more-than-twenty;
+        }
+        &--more-than-ten {
+            background-color: v.$color-temp-more-than-ten;
+        }
+        &--more-than-zero {
+            background-color: v.$color-temp-more-than-zero;
+        }
+    
+        &--more-than-fourty,
+        &--less-than-ten,
+        &--less-than-twenty,
+        &--less-than-thirty {
+            color: v.$color-white;
+        }
+    }
+
+    &__back {
+        transform: rotateY(180deg);
+    }
 
     margin: 0 auto;
-    padding: 2rem;
-
-    border-radius: 2rem;
-
-    &--less-than-thirty {
-        background-color: v.$color-temp-less-than-thirty;
-    }
-    &--less-than-twenty {
-        background-color: v.$color-temp-less-than-twenty;
-    }
-    &--less-than-ten {
-        background-color: v.$color-temp-less-than-ten;
-    }
-    &--less-than-zero {
-        background-color: v.$color-temp-less-than-zero;
-    }
-    &--more-than-fourty {
-        background-color: v.$color-temp-more-than-fourty;
-    }
-    &--more-than-thirty {
-        background-color: v.$color-temp-more-than-thirty;
-    }
-    &--more-than-twenty {
-        background-color: v.$color-temp-more-than-twenty;
-    }
-    &--more-than-ten {
-        background-color: v.$color-temp-more-than-ten;
-    }
-    &--more-than-zero {
-        background-color: v.$color-temp-more-than-zero;
-    }
-
-    &--more-than-fourty,
-    &--less-than-ten,
-    &--less-than-twenty,
-    &--less-than-thirty {
-        color: v.$color-white;
-    }
 
     &__title {
         font-size: 1.5em;
@@ -115,6 +151,24 @@
 
         &--couple {
             flex: 1 1;
+        }
+    }
+
+    &__action {
+        width: 10rem;
+
+        padding: .5rem 1rem;
+        margin: 1rem auto 0;
+
+        text-align: center;
+        color: v.$color-white;
+
+        background-color: v.$color-medium-gray;
+
+        border-radius: 1rem;
+
+        &:hover {
+            cursor: pointer;
         }
     }
 }
