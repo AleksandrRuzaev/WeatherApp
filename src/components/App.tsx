@@ -1,8 +1,7 @@
 import React from 'react';
 import './App.scss';
 import { Content } from './content';
-import { Header } from './header/header';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { routes } from '../utilities/routes';
 import { Layout } from './screens/layout';
 

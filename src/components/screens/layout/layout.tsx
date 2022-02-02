@@ -8,6 +8,8 @@ const LayoutContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 5fr;
     grid-template-rows: 5em;
+
+    height: 100vh;
 `;
 
 const Content = styled.div`
