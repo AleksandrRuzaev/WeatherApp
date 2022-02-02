@@ -4,6 +4,7 @@ import { Content } from './content';
 import { Header } from './header/header';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { routes } from '../utilities/routes';
+import { Layout } from './screens/layout';
 
 const App: React.FC = () => {
     return (
@@ -16,13 +17,16 @@ const App: React.FC = () => {
                     <Route path={routes.fiveDays.route}>
                         <></>
                     </Route>
-                    <Route path="/">
-                        <></>
-                    </Route>
+                    <Route
+                        path="/"
+                        element={
+                            <Layout>
+                                <Content />
+                            </Layout>
+                        }
+                    ></Route>
                 </Routes>
             </Router>
-            <Header />
-            <Content />
         </>
     );
 };

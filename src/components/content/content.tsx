@@ -56,7 +56,6 @@ const Content: React.FC = (): JSX.Element => {
                     .then((res) => res.json())
                     .then((result) => {
                         setTomorrowData(result.daily[1]);
-                        console.log(result.daily[1]);
                     });
             },
         );
